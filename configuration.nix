@@ -32,7 +32,7 @@ services.fail2ban = {
   '';
 };
 
-
+programs.niri.enable = true;
 #virtualization
 virtualisation.libvirtd.enable = true;
 networking.nftables.enable = true;
@@ -153,6 +153,8 @@ XDG_DATA_DIRS = [
   "${pkgs.glib}/share"
 
   ];
+EDITOR = "nvim";
+VISUAL = "nvim";
   };
 
 #app-image support don't forget
@@ -162,7 +164,9 @@ programs.appimage.binfmt = true;
 #xdg-portal-block
 xdg.portal = {
 enable = true;
-extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+extraPortals = with pkgs; [ 
+xdg-desktop-portal-gtk
+xdg-desktop-portal-hyprland ];
 };
 
 #ssh-settings
