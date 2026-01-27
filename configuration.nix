@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, zen-browser, ... }:
 
 {
   imports =
@@ -160,8 +160,8 @@ git
 cliphist
 zathura 
 zathura-pdf-mupdf
-gnome.nautilus
-gnome.file-roller
+pkgs.nautilus
+pkgs.file-roller
 ps_mem
 bc
 flex
