@@ -144,7 +144,7 @@ services.flatpak.enable = true;
   users.users.robin = {
     isNormalUser = true;
     description = "robin";
-    extraGroups = [ "networkmanager" "wheel" "docker" "libvirtd" "kvm" ];
+    extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
   };
 
@@ -157,9 +157,11 @@ programs.nix-index.enable = true;
   # $ nix search wget
   environment.systemPackages = with pkgs; [
 git
-xfce.thunar
 cliphist
-evince
+zathura 
+zathura-pdf-mupdf
+gnome.nautilus
+gnome.file-roller
 ps_mem
 bc
 flex
@@ -168,9 +170,6 @@ s-tui
 zen-browser.packages.${pkgs.system}.default
 glib
 gsettings-desktop-schemas
-ncurses
-obs-studio
-dmidecode
 gcc 
 zip
 file
@@ -202,13 +201,11 @@ cmake
 gdb
 rofi
 firefox
-vim
 curl 
 wget 
 unzip 
 neovim
 gammastep
-curl
 google-chrome
 hyprpaper
 alacritty
@@ -216,7 +213,6 @@ protonvpn-gui
 adwaita-icon-theme
 grim
 slurp
-docker
 tmux
 swaynotificationcenter
 wl-clipboard
