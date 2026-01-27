@@ -159,7 +159,7 @@ programs.nix-index.enable = true;
 git
 cliphist
 zathura 
-zathura-pdf-mupdf
+zathuraPkgs.zathura_pdf_mupdf
 pkgs.nautilus
 pkgs.file-roller
 ps_mem
