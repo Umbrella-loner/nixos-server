@@ -13,43 +13,13 @@
 hardware.firmware = [
   (pkgs.runCommand "custom-edid" {} ''
     mkdir -p $out/lib/firmware/edid
-    cp ${./edid/edid.bin} $out/lib/firmware/edid/edid.bin
+    cp ${./edid.bin} $out/lib/firmware/edid/edid.bin
   '')
 ];
 
-services.fail2ban = {
-  enable = true;
-  banaction = "nftables-multiport";
-
-  jails.sshd = ''
-    enabled = true
-    backend = systemd
-    port = ssh
-    filter = sshd
-    maxretry = 5
-    findtime = 10m
-    bantime = 1h
-  '';
-};
-
-programs.niri.enable = true;
-#virtualization
-virtualisation.libvirtd.enable = true;
-networking.nftables.enable = true;
-virtualisation.spiceUSBRedirection.enable = true;
-programs.virt-manager.enable = true;
-zramSwap.enable = true;
 
 
-boot.kernelModules = [ "intel_rapl_msr" ];
-networking.networkmanager.dns = "systemd-resolved";
-services.resolved = {
-enable = true;
-};
-services.avahi.nssmdns = true;
-services.tailscale.enable = true;
 
-#darkmode
 # Add this block to your configuration.nix
 programs.dconf.enable = true;  # You already have this
 
@@ -89,59 +59,11 @@ boot.loader.grub = {
   useOSProber = true;
 };
 
-programs.nix-ld.enable = true;
-programs.nix-ld.libraries = with pkgs;
-[
-stdenv.cc.cc
-  zlib
-  openssl
-  glib
-  gtk3
-  xorg.libX11
-  xorg.libXcursor
-  xorg.libXrandr
-  xorg.libXinerama
-  xorg.libXcomposite
-  xorg.libXdamage
-  xorg.libXfixes
-  xorg.libXtst
-  alsa-lib
-  pulseaudio
-  wayland
-  mesa
-];
 
-#laptop stuff
-services.logind.settings.Login = {
-  HandleLidSwitch = "ignore";
-  HandleLidSwitchExternalPower = "ignore";
-};
-
-
-programs.zsh = {
-  enable = true;
-
-  enableCompletion = true;
-  autosuggestions.enable = true;
-  syntaxHighlighting.enable = true;
-  shellAliases = {
-  };
-
+programs.fish.enable = true;
 
   # Global interactive config (applies to ALL users)
-  interactiveShellInit = ''
-    bindkey '^ ' autosuggest-accept
-    path+=("$HOME/.local/bin")
-    export PATH
- # fzf integration
-    eval "$(fzf --zsh)"
-    
-    # zoxide (better cd)
-    eval "$(zoxide init zsh)"
-  '';
-
-};
-users.defaultUserShell = pkgs.zsh;
+users.defaultUserShell = pkgs.fish;
 
 #dbus-thing-block
 services.dbus.enable = true;
@@ -169,14 +91,6 @@ xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland ];
 };
 
-#ssh-settings
-services.openssh = {
-enable = true;
-settings = {
-PasswordAuthentication = false;
-PermitRootLogin = "no";
-};
-};
 boot.kernelParams = [
 "console=tty50"
 "mem_sleep_default=deep"
@@ -187,7 +101,7 @@ boot.kernelParams = [
 
 #flakes-setting
 nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  networking.hostName = "server"; # Define your hostname.
+  networking.hostName = "home"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -243,7 +157,6 @@ programs.nix-index.enable = true;
   # $ nix search wget
   environment.systemPackages = with pkgs; [
 git
-terraform
 xfce.thunar
 cliphist
 evince
@@ -251,21 +164,13 @@ ps_mem
 bc
 flex
 bison
-cpio
-binutils
-lm_sensors
-linuxHeaders
 s-tui
-#zen-browser.packages.${pkgs.system}.default
+zen-browser.packages.${pkgs.system}.default
 glib
 gsettings-desktop-schemas
 ncurses
 obs-studio
-obs-studio-plugins.wlrobs
 dmidecode
-obs-studio-plugins.obs-pipewire-audio-capture
-obs-studio-plugins.obs-vkcapture
-blender
 gcc 
 zip
 file
@@ -292,29 +197,22 @@ man-pages
 man-pages-posix
 fzf
 zoxide
-tldr
-clang
-clang-tools
 gnumake
 cmake
 gdb
 rofi
 firefox
-kubectl
 vim
 curl 
 wget 
 unzip 
-vlc
 neovim
 gammastep
 curl
-brave
 google-chrome
 hyprpaper
 alacritty
 protonvpn-gui
-firefox
 adwaita-icon-theme
 grim
 slurp
@@ -326,7 +224,6 @@ brightnessctl
 networkmanagerapplet
 blueman
 waybar
-fastfetch
 swayosd
 nerd-fonts.jetbrains-mono
 nerd-fonts.fira-code
@@ -364,12 +261,6 @@ packages = with pkgs; [
 hardware.bluetooth.enable = true;
 services.blueman.enable = true;
 
-
-  #docker-block
-virtualisation.docker.rootless = {
-enable = true;
-setSocketVariable = true;
-};
 
 
 
